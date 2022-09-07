@@ -14,3 +14,7 @@ directories = {
     '2': ['10006'],
     '3': []
 }
+
+
+def fun():
+    pass
