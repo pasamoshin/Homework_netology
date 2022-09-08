@@ -16,5 +16,33 @@ directories = {
 }
 
 
-def fun():
-    pass  yerdhvf
+def people_num_doc():
+    pass
+
+
+def main():
+    with open('Homework_lecture_6/commands.txt', 'r') as file:
+        print(file.read())
+    while True:
+        usr_cmd = input('Введите команду:')
+        if usr_cmd == 'p':
+            pass
+        elif usr_cmd == 's':
+            pass
+        elif usr_cmd == 'l':
+            pass
+        elif usr_cmd == 'a':
+            pass
+        elif usr_cmd == 'd':
+            pass
+        elif usr_cmd == 'm':
+            pass
+        elif usr_cmd == 'as':
+            pass
+        elif usr_cmd == 'q':
+            break
+        else:
+            print('Введена некоректная команда')
+
+
+main()
