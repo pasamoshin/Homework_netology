@@ -31,14 +31,12 @@ def people_num_doc():
         print('Указанный документ не найден.')
 
 
-
-
 def main():
     with open('Homework_lecture_6/commands.txt', 'r') as file:
         print(file.read())
     while True:
         usr_cmd = input('Введите команду:')
-        if usr_cmd == 'p': 
+        if usr_cmd == 'p':
             people_num_doc()
         elif usr_cmd == 's':
             pass
