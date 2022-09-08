@@ -1,6 +1,9 @@
 # Homework for lecture 6
 # Task 1: Assistance to the secretary
 
+from sre_constants import MAX_UNTIL
+
+
 print('Task 1: Assistance to the secretary')
 
 documents = [
@@ -17,7 +20,20 @@ directories = {
 
 
 def people_num_doc():
-    pass
+    while True:
+        usr_input = input('Введите номер документа: ')
+        iteration = 0
+        for dict_ in documents:
+            if usr_input == dict_['number']:
+                print(dict_['name'])
+                iteration = 1
+            elif usr_input == 'q':
+                return
+        if iteration == 1:
+            continue
+        print('Указанный документ не найден.')
+
+
 
 
 def main():
@@ -26,7 +42,7 @@ def main():
     while True:
         usr_cmd = input('Введите команду:')
         if usr_cmd == 'p':
-            pass
+            people_num_doc()
         elif usr_cmd == 's':
             pass
         elif usr_cmd == 'l':
