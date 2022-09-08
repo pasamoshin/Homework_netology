@@ -1,9 +1,6 @@
 # Homework for lecture 6
 # Task 1: Assistance to the secretary
 
-from sre_constants import MAX_UNTIL
-
-
 print('Task 1: Assistance to the secretary')
 
 documents = [
