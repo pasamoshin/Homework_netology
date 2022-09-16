@@ -1,6 +1,7 @@
 # Homework for lecture 6
 # Task 1: Assistance to the secretary
 
+
 documents = [
     {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
     {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"},
@@ -14,40 +15,17 @@ directories = {
 }
 
 
-def people_or_shelf(usr_cmd):
-    '''The function outputs people or a shelf by document number.
-    '''
-    while True:
-        usr_input = check_doc('Введите номер документа: ')
-        if usr_input == 'q':
-            return
-        if usr_cmd == 'p':
-            for person in documents:
-                if usr_input == person['number']:
-                    print(person['name'])
-        else:
-            for shelf, docs in directories.items():
-                if usr_input in docs:
-                    print(f'Документ "{usr_input}" лежит на полке № {shelf}')
-
-
-def list_docs():
-    for person in documents:
-        print(f'{list(person.values())[0]}' +
-              ' '.join(f' "{text}"' for text in list(person.values())[1:]))
-
-
 def check_shelf(str_input):
     ''' The function checks the availability of shelves in directories.
     '''
     while True:
         value = str(input(str_input))
-        if value in directories.keys():
+        if value == 'q':
             return value
-        elif value == 'q':
+        elif value in directories.keys():
             return value
         else:
-            print('Указанная полка не существует.')
+            print('Указанная полка не существует. Введите номер полки: ')
 
 
 def check_doc(str_input):
@@ -58,8 +36,39 @@ def check_doc(str_input):
                 return value
         if value == 'q':
             return value
+        for docs in directories.values():
+            if value in docs:
+                return value
         else:
             print('Указанного документа нет в базе.')
+
+
+def people_docs():
+    '''The function outputs people or a shelf by document number.
+    '''
+    while True:
+        usr_input = check_doc('Введите номер документа: ')
+        if usr_input == 'q':
+            return
+        for person in documents:
+            if usr_input == person['number']:
+                print(person['name'])
+
+
+def shelf_docs():
+    while True:
+        usr_input = check_doc('Введите номер документа: ')
+        if usr_input == 'q':
+            return
+        for shelf, docs in directories.items():
+            if usr_input in docs:
+                print(f'Документ "{usr_input}" лежит на полке № {shelf}')
+
+
+def list_docs():
+    for person in documents:
+        print(f'{list(person.values())[0]}' +
+              ' '.join(f' "{text}"' for text in list(person.values())[1:]))
 
 
 def add_doc():
@@ -68,8 +77,11 @@ def add_doc():
     on which it will be stored.
     '''
     while True:
-        doc_type_num = input('Введите тип и номер документа: ').lower().split()
-        if doc_type_num == ['q']:
+        doc_type = input('Введите тип документа: ').lower()
+        if doc_type == 'q':
+            return
+        doc_num = input('Введите номер документа: ')
+        if doc_num == 'q':
             return
         owner_doc = input('Введите имя владельца: ').title()
         if owner_doc == 'Q':
@@ -78,8 +90,8 @@ def add_doc():
             'Введите номер полки на которой будет храниться документ: ')
         if num_shelf == 'q':
             return
-        new_doc = {"type": doc_type_num[0],
-                   "number": ' '.join(map(str, doc_type_num[1:])),
+        new_doc = {"type": doc_type,
+                   "number": doc_num,
                    "name": owner_doc}
         if new_doc not in documents:
             documents.append(new_doc)
@@ -87,9 +99,8 @@ def add_doc():
             print('Документ добавлен.')
         else:
             for shelf, docs in directories.items():
-                if str(doc_type_num[1:]) in docs:
-                    print(f'Полка № {shelf}')
-            print(f'Такой документ уже есть в базе и лежит на полке {shelf}')
+                if doc_num in docs:
+                    print(f'Такой документ уже лежит на полке {shelf}')
 
 
 def delete_doc():
@@ -102,7 +113,6 @@ def delete_doc():
         documents = list(filter(lambda i: i['number'] != doc_num, documents))
         for shelf, docs in directories.items():
             if doc_num in docs:
-                # directories[shelf] = list(filter(lambda i: i != doc_num, docs))
                 directories[shelf].remove(doc_num)
                 print('Документ удален')
 
@@ -135,12 +145,14 @@ def add_shelf():
 
 
 def main():
-    with open('Homework_lecture_6/commands.txt', 'r') as file:
+    with open('commands.txt', 'r', encoding='utf-8') as file:
         print(file.read())
     while True:
         usr_cmd = input('Введите команду:')
-        if usr_cmd == 'p' or usr_cmd == 's':
-            people_or_shelf(usr_cmd)
+        if usr_cmd == 'p':
+            people_docs()
+        elif usr_cmd == 's':
+            shelf_docs()
         elif usr_cmd == 'l':
             list_docs()
         elif usr_cmd == 'ls':
@@ -156,7 +168,7 @@ def main():
         elif usr_cmd == 'q':
             break
         else:
-            print('Введена некоректная команда')
+            print('Введена неверная команда')
 
 
 main()
