@@ -38,6 +38,7 @@ def check_doc(str_input):
             return value
         for docs in directories.values():
             if value in docs:
+                print('Указанный документ просто валяется на полке')
                 return value
         else:
             print('Указанного документа нет в базе.')
