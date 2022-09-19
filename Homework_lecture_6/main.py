@@ -28,6 +28,8 @@ def check_shelf(str_input):
 
 
 def check_doc(str_input):
+    '''Checking the existence of a shelf.
+    '''
     while True:
         value = str(input(str_input))
         for document in documents:
