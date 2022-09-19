@@ -1,10 +1,6 @@
 # Homework for lecture 6
 # Task 1: Assistance to the secretary
 
-
-from multiprocessing.sharedctypes import Value
-
-
 documents = [
     {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
     {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"},
@@ -60,6 +56,8 @@ def people_docs():
 
 
 def shelf_docs():
+    '''Search for a document on the shelves.
+    '''
     while True:
         usr_input = check_doc('Введите номер документа: ')
         if usr_input == 'q':
@@ -70,30 +68,19 @@ def shelf_docs():
 
 
 def list_docs():
+    '''Showing all documents.
+    '''
     for person in documents:
         print(f'{list(person.values())[0]}' +
               ' '.join(f' "{text}"' for text in list(person.values())[1:]))
 
-    docs_dir = set(x for l in directories.values() for x in l)
+    docs_dir = set(x for y in directories.values() for x in y)
     docs_doc = set()
     for person in documents:
         docs_doc.add(person['number'])
     docs_without_owner = docs_dir.difference(docs_doc)
     print("Документы без данных: ", *docs_without_owner)
 
-
-
-# documents = [
-#     {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
-#     {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"},
-#     {"type": "insurance", "number": "10006", "name": "Аристарх Павлов"}
-# ]
-
-# directories = {
-#     '1': ['2207 876234', '11-2', '5455 028765'],
-#     '2': ['10006'],
-#     '3': []
-# }
 
 def add_doc():
     ''' Adds a new document to the documents and to the directories,
