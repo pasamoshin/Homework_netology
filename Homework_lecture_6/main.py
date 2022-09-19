@@ -22,14 +22,13 @@ with sq.connect("database.db") as db:
     CREATE TABLE IF NOT EXISTS directories(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         shelf VARCHAR(8),
-        number VARCHAR(15) NOT NULL UNIQUE
+        number VARCHAR(15) UNIQUE
     );
     CREATE TABLE IF NOT EXISTS documents(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         type VARCHAR(15),
-        number VARCHAR(15) NOT NULL UNIQUE,
-        name VARCHAR(30),
-        FOREIGN KEY (number) REFERENCES directories (number)
+        number VARCHAR(15) UNIQUE,
+        name VARCHAR(30)
     )
     """
 
