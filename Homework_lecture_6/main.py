@@ -142,13 +142,17 @@ def add_doc():
             'Введите номер полки на которой будет храниться документ: ')
         if num_shelf == 'q':
             return
-        query = conn_db('SELECT number FROM documents WHERE number = ?', doc_num)
+        query = conn_db(
+            'SELECT number FROM documents WHERE number = ?', doc_num)
         if query == []:
-            conn_db('INSERT INTO documents(type, number, name) VALUES(?, ?, ?)', doc_type, doc_num, owner_doc)
-            conn_db('INSERT INTO directories(shelf, number) VALUES(?, ?)', num_shelf, doc_num)
+            conn_db('INSERT INTO documents(type, number, name) VALUES(?, ?, ?)',
+                    doc_type, doc_num, owner_doc)
+            conn_db('INSERT INTO directories(shelf, number) VALUES(?, ?)',
+                    num_shelf, doc_num)
             print('Документ добавлен.')
         else:
-            query = conn_db('SELECT shelf FROM directories WHERE number = ?', doc_num)
+            query = conn_db(
+                'SELECT shelf FROM directories WHERE number = ?', doc_num)
             print('Такой документ уже лежит на полке: ' + ''.join(*query))
 
 
@@ -177,7 +181,8 @@ def add_shelf():
         new_shelf = input('Введите номер новой полки: ')
         if new_shelf == 'q':
             return
-        query = conn_db('SELECT shelf FROM directories WHERE shelf = ?', new_shelf)
+        query = conn_db(
+            'SELECT shelf FROM directories WHERE shelf = ?', new_shelf)
         if query == []:
             conn_db('INSERT INTO directories (shelf) VALUES (?)', new_shelf)
             print(f'Папка № {new_shelf} добавлена.')
@@ -186,32 +191,30 @@ def add_shelf():
             print(f'Папка {new_shelf} уже сужествует')
 
 
-def main():
+def list_shelf():
+    query = conn_db(
+        'SELECT shelf, number FROM directories WHERE number IS NOT NULL')
+    print('\n'.join(f'{" ".join(value)}' for value in query))
+
+
+input_dict = {'p': people_docs, 's': shelf_docs, 'l': list_docs,
+              'ls': list_shelf, 'a': add_doc, 'd': delete_doc,
+              'm': move_doc, 'as': add_shelf}
+
+
+def user_choice():
     with open('commands.txt', 'r', encoding='utf-8') as file:
         print(file.read())
-    while True:
-        usr_cmd = input('Введите команду:')
-        if usr_cmd == 'p':
-            people_docs()
-        elif usr_cmd == 's':
-            shelf_docs()
-        elif usr_cmd == 'l':
-            list_docs()
-        elif usr_cmd == 'ls':
-            query = conn_db('SELECT shelf, number FROM directories WHERE number IS NOT NULL')
-            print('\n'.join(f'{" ".join(value)}' for value in query))
-        elif usr_cmd == 'a':
-            add_doc()
-        elif usr_cmd == 'd':
-            delete_doc()
-        elif usr_cmd == 'm':
-            move_doc()
-        elif usr_cmd == 'as':
-            add_shelf()
-        elif usr_cmd == 'q':
-            break
-        else:
+
+    y = True
+    while y:
+        choice = input('Введите команду:').lower()
+        if choice == 'q':
+            y = False
+        elif choice not in input_dict:
             print('Введена неверная команда')
+        else:
+            input_dict[choice]()
 
 
-main()
+user_choice()
